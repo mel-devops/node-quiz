@@ -1,8 +1,7 @@
 const { Carousel } = require('bootstrap');
 const express = require('express');
 const path = require('path');
-const PORT = 8080;
-
+const PORT = 8080;add
 
 const app = express();
 // parses JSON from incoming request
