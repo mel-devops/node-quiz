@@ -1,3 +1,4 @@
+const { Carousel } = require('bootstrap');
 const express = require('express');
 const path = require('path');
 const PORT = 8080;
@@ -17,33 +18,61 @@ const options = {
 
 // #3 helper function 'getColor`
 const getColor = (fruit) => {
+  return options[fruit];
 }
 
 // #1 serve the colors.html page when /colors is visited
 // DO NOT USE express.static
 app.get('/colors', () => {
+  res.status(200).sendFile(path.join(_dirname, './client/colors.html'));
   
 });
 
 // #2 & #4 handle POST requests to /colors
 app.post('/colors', () => {
+  const {fruit} = req.body;
+  const color = getColor(fruit);
+  
+  if (color) {
+    res.status(200).send({color});
+  }else {
+    res.status(404).send({message: 'Invalid Color'});
+  }
   
 });
 
 // #6 serve styles.css - DO NOT use express.static()
 app.get('/styles.css', () => {
+  res.status(200).sendFile(path.join)(__dirname, '/client/styles.css'));
 
 });
 
 // #5 Update functionality to database
 app.put('/colors/:id/:fruit', () => {
+  const {id, fruit} = req.params;
+  console.log(fruit)
+  const color = getColor(fruit);
+
+  const [rows] = await.pool.execute(
+    UPDATE cars
+    SET color = ?
+    WHERE car_id = ?
+    [color, id]
+  );
+
+  console.log (rows)
+  res.status(200).send(rows[0]); } 
+  catch (error) {
+  console.error(error);
+  res.status(500).send('Error updating');
 
 });
 
+
 // #7 unknown routes - 404 handler
 // research what route to serve this for
-app.get('', () => {
-  
+app.get('/*', async(req, res) => {
+  res.status(404).sendFile(path.join(__dirname, './client/404.html'))
 })
 
 // Global error handling middleware
